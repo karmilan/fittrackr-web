@@ -49,3 +49,28 @@ export interface WeightStats {
     totalLoss: number;
     logs: WeightLog[];
 }
+
+export interface IMeal {
+    name: string;
+    calories: number;
+    protein: number;
+    carbs: number;
+    fats: number;
+    type: 'breakfast' | 'lunch' | 'dinner' | 'snack';
+}
+
+export interface IWorkout {
+    type: string;
+    durationMinutes: number;
+    intensity: 'low' | 'medium' | 'high';
+    description: string;
+}
+
+export interface IDailyPlan {
+    _id: string;
+    userId: string;
+    date: string;
+    calorieTarget: number;
+    meals: IMeal[];
+    workout: IWorkout;
+}

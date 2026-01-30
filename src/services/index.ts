@@ -22,3 +22,5 @@ export const nutritionService = {
     logNutrition: (data: Partial<NutritionLog>) => api.post<NutritionLog>('/nutrition', data),
     getSummary: () => api.get<DailyNutritionSummary>('/nutrition/summary'),
 };
+
+export * from './planner.service';

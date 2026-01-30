@@ -1,7 +1,7 @@
+import AppLayout from "@/components/layout/AppLayout";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AppLayout from "@/components/layout/AppLayout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,11 +29,16 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/icon-192x192.png" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="FitTrackr" />
       </head>
       <body className={inter.className}>
         <AppLayout>
           {children}
         </AppLayout>
+        <script src="/pwa-register.js"></script>
       </body>
     </html>
   );
