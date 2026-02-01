@@ -11,10 +11,10 @@ export const PlannerService = {
             const plan = await apiWrapper.get<IDailyPlan>(`/planner?date=${dateStr}`);
             return plan || null;
         } catch (error: unknown) {
-            // Handle 404 gracefully
+            // Handle 404 gracefully - this is expected when no plan exists
             const errorObj = error as Record<string, unknown>;
-            if (error instanceof Error && 'status' in errorObj && errorObj.status === 404) {
-                return null; // No plan exists
+            if (errorObj?.message === 'No plan found for this date.') {
+                return null; // No plan exists for this date - this is normal
             }
             console.error('Error fetching daily plan:', error);
             return null;

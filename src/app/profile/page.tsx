@@ -12,10 +12,10 @@ export default function ProfilePage() {
     const { profile, fetchProfile, updateProfile, isLoading, error } = useAppStore();
     const router = useRouter();
 
-    const [formData, setFormData] = useState<Partial<UserProfile>>({
-        height: 0,
-        startingWeight: 0,
-        targetWeight: 0,
+    const [formData, setFormData] = useState<any>({
+        height: '',
+        startingWeight: '',
+        targetWeight: '',
         weeklyGoal: -0.5,
         activityLevel: 'moderately_active'
     });
@@ -32,17 +32,42 @@ export default function ProfilePage() {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
+
+        // Handle number inputs
+        if (type === 'number') {
+            // Allow empty string for better DX (so user can delete field)
+            if (value === '') {
+                setFormData(prev => ({ ...prev, [name]: '' }));
+                return;
+            }
+
+            const numValue = parseFloat(value);
+            if (!isNaN(numValue)) {
+                setFormData(prev => ({ ...prev, [name]: numValue }));
+            }
+            return;
+        }
+
         setFormData(prev => ({
             ...prev,
-            [name]: type === 'number' ? parseFloat(value) : value
+            [name]: value
         }));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await updateProfile(formData);
+
+        // Convert empty strings to numbers (or validate)
+        const submissionData = {
+            ...formData,
+            height: Number(formData.height) || 0,
+            startingWeight: Number(formData.startingWeight) || 0,
+            targetWeight: Number(formData.targetWeight) || 0,
+            weeklyGoal: Number(formData.weeklyGoal) || 0,
+        };
+
+        await updateProfile(submissionData);
         if (!error) {
-            // Show success or redirect? For now just refresh data
             router.refresh();
         }
     };
@@ -60,7 +85,7 @@ export default function ProfilePage() {
                                 label="Height (cm)"
                                 name="height"
                                 type="number"
-                                value={formData.height}
+                                value={formData.height ?? ''}
                                 onChange={handleChange}
                                 required
                             />
@@ -69,7 +94,7 @@ export default function ProfilePage() {
                                 name="startingWeight"
                                 type="number"
                                 step="0.1"
-                                value={formData.startingWeight}
+                                value={formData.startingWeight ?? ''}
                                 onChange={handleChange}
                                 required
                             />
@@ -78,7 +103,7 @@ export default function ProfilePage() {
                                 name="targetWeight"
                                 type="number"
                                 step="0.1"
-                                value={formData.targetWeight}
+                                value={formData.targetWeight ?? ''}
                                 onChange={handleChange}
                                 required
                             />
@@ -87,7 +112,7 @@ export default function ProfilePage() {
                                 name="weeklyGoal"
                                 type="number"
                                 step="0.1"
-                                value={formData.weeklyGoal}
+                                value={formData.weeklyGoal ?? ''}
                                 onChange={handleChange}
                                 required
                                 placeholder="-0.5 for loss"

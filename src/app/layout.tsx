@@ -1,4 +1,5 @@
 import AppLayout from "@/components/layout/AppLayout";
+import { AuthGuard } from "@/components/auth/AuthGuard";
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
@@ -35,9 +36,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="FitTrackr" />
       </head>
       <body className={inter.className}>
-        <AppLayout>
-          {children}
-        </AppLayout>
+        <AuthGuard>
+          <AppLayout>
+            {children}
+          </AppLayout>
+        </AuthGuard>
         <script src="/pwa-register.js"></script>
       </body>
     </html>
