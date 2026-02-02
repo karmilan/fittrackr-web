@@ -37,18 +37,18 @@ export default function ProfilePage() {
         if (type === 'number') {
             // Allow empty string for better DX (so user can delete field)
             if (value === '') {
-                setFormData(prev => ({ ...prev, [name]: '' }));
+                setFormData((prev: any) => ({ ...prev, [name]: '' }));
                 return;
             }
 
             const numValue = parseFloat(value);
             if (!isNaN(numValue)) {
-                setFormData(prev => ({ ...prev, [name]: numValue }));
+                setFormData((prev: any) => ({ ...prev, [name]: numValue }));
             }
             return;
         }
 
-        setFormData(prev => ({
+        setFormData((prev: any) => ({
             ...prev,
             [name]: value
         }));
