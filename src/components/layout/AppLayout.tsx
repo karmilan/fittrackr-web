@@ -50,7 +50,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
                     {isAuthenticated && user && (
                         <div className="flex items-center gap-4 text-sm">
-                            <span className="hidden sm:inline text-gray-400">
+                            <span className="sm:inline text-gray-400">
                                 Hi, <span className="text-white font-medium">{user.name}</span>
                             </span>
                             <button
